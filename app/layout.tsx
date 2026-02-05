@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     canonical: "https://square.pragmatsoft.com",
   },
   other: {
-    // "yandex-verification": "8547f13ee7c21131",
+    "yandex-verification": "9fbb438139f81523",
     // "zen-verification": "tvWRACgORsdtwK14mtRp9I6k57G3XRCjS47E2WwfVTzIqzuEizp9Tab0HVh6ehBI",
   },
 };

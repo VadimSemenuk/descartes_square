@@ -25,7 +25,7 @@ export default function Home() {
 
   return (
     <div
-      className="flex flex-col min-h-screen items-center p-10 relative"
+      className="flex flex-col min-h-screen items-center p-3 sm:p-10 relative"
       style={{
         "backgroundColor": "#eef5ff",
         "backgroundImage": "radial-gradient(at 6% 4%, #eef5ff 0%, transparent 60%), radial-gradient(at 13% 67%, #b4d4ff 0%, transparent 50%), radial-gradient(at 86% 0%, #86b6f6 0%, transparent 40%), radial-gradient(at 16% 39%, #176b87 0%, transparent 30%)"
@@ -33,12 +33,12 @@ export default function Home() {
     >
       <main className="container flex flex-col items-center">
         <h1 className="text-xl opacity-50 text-center">Квадрат Декарта</h1>
-        <h2 className="text-6xl text-center">Принимайте <span className="text-[#105097] font-bold">решения</span><br/>ответив
+        <h2 className="text-5xl sm:text-6xl text-center">Принимайте <span className="text-[#105097] font-bold">решения</span><br/>ответив
           на 4 вопроса</h2>
         <a href="#description" className="opacity-50 underline mt-5">подробнее</a>
 
         <input
-          className="text-4xl mt-15 w-full text-center outline-none"
+          className="text-3xl sm:text-4xl mt-15 w-full text-center outline-none"
           type="text"
           placeholder={"Введите Ваш вопрос..."}
           value={question}
@@ -180,7 +180,7 @@ function Square({title, subtitle, subtitleBackground, subtitleColor, answers, on
   // }, [answers, editingAnswer]);
 
   return (
-    <div className="rounded-4xl p-7 flex flex-col justify-between bg-[#ffffff40] border-1 border-[#ffffff90]">
+    <div className="rounded-4xl p-3 sm:p-7 flex flex-col justify-between bg-[#ffffff40] border-1 border-[#ffffff90]">
       <div className="flex flex-col items-start">
         <div
           className={`rounded-full pb-1 pt-1 pl-3 pr-3 text-sm ${subtitleBackground} ${subtitleColor}`}>{subtitle}</div>
