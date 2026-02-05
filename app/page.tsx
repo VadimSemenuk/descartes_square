@@ -1,6 +1,7 @@
 "use client"
 
 import {ChangeEvent, TextareaHTMLAttributes, useEffect, useRef, useState} from "react";
+import DeleteIcon from "@/public/delete_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg"
 
 class Answer {
   id: string = "";
@@ -140,7 +141,7 @@ function Square({title, subtitle, subtitleBackground, subtitleColor, answers, on
           {answers.map((answer, index) => (
             <div
               key={index}
-              className="flex items-center gap-2 hover:bg-[#ffffff30] cursor-pointer transition-all duration-200 p-2 w-full rounded-xl"
+              className={`flex items-center gap-2 hover:bg-[#ffffff30] cursor-pointer transition-all duration-200 p-2 w-full rounded-xl ${editingAnswer && (editingAnswer?.id === answer.id) ? 'bg-[#ffffff30]' : ''}`}
               onClick={() => { setEditingAnswer(answer) }}
             >
               <div className="rounded-full bg-[#bdd5ee] text-[#105097] font-bold w-6 h-6 flex items-center justify-center text-sm">
@@ -168,6 +169,10 @@ function Square({title, subtitle, subtitleBackground, subtitleColor, answers, on
           }))
           setEditingAnswer(null)
         }}
+        onRemove={(answer: Answer) => {
+          onAnswersUpdate(answers.filter((it) => it.id !== answer.id))
+          setEditingAnswer(null)
+        }}
       />
     </div>
   )
@@ -176,7 +181,8 @@ function Square({title, subtitle, subtitleBackground, subtitleColor, answers, on
 interface AddAnswerProps {
   editingAnswer: Answer | null;
   onAdd: (it: Answer) => void;
-  onEdit: (it: Answer) => void
+  onEdit: (it: Answer) => void;
+  onRemove: (it: Answer) => void;
 }
 
 const getDefaultAnswer = (): Answer => (
@@ -188,7 +194,7 @@ const getDefaultAnswer = (): Answer => (
 )
 const defaultAnswer = getDefaultAnswer()
 
-function AddAnswer({ onAdd, onEdit, editingAnswer }: AddAnswerProps) {
+function AddAnswer({ onAdd, onEdit, onRemove, editingAnswer }: AddAnswerProps) {
 
   const [answer, setAnswer] = useState<Answer>(
     () => editingAnswer ?? defaultAnswer
@@ -235,19 +241,46 @@ function AddAnswer({ onAdd, onEdit, editingAnswer }: AddAnswerProps) {
           </div>
         </div>
 
-        <button
-          className="h-17 pl-4 pr-4 flex justify-center items-center rounded-full bg-[#bdd5ee] text-[#105097] font-bold cursor-pointer"
-          onClick={() => {
-            if (editingAnswer) {
-              onEdit(answer)
-            } else {
-              onAdd(answer)
-            }
-            setAnswer(getDefaultAnswer())
-          }}
-        >
-          Добавить
-        </button>
+        <div className="flex gap-1">
+          {
+            editingAnswer &&
+              <button
+                  className="h-17 pl-4 pr-4 flex justify-center items-center rounded-full bg-red-800 text-red-100 font-bold cursor-pointer"
+                  onClick={() => {
+                    onRemove(answer)
+                    setAnswer(getDefaultAnswer())
+                  }}
+              >
+                  <DeleteIcon className="w-6 h-6" />
+              </button>
+          }
+
+          {
+            editingAnswer &&
+              <button
+                  className="h-17 pl-4 pr-4 flex justify-center items-center rounded-full bg-[#bdd5ee] text-[#105097] font-bold cursor-pointer"
+                  onClick={() => {
+                    onEdit(answer)
+                    setAnswer(getDefaultAnswer())
+                  }}
+              >
+                  Изменить
+              </button>
+          }
+
+          {
+            !editingAnswer &&
+              <button
+                  className="h-17 pl-4 pr-4 flex justify-center items-center rounded-full bg-[#bdd5ee] text-[#105097] font-bold cursor-pointer"
+                  onClick={() => {
+                    onAdd(answer)
+                    setAnswer(getDefaultAnswer())
+                  }}
+              >
+                  Добавить
+              </button>
+          }
+        </div>
       </div>
     </div>
   )
