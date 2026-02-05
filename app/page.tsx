@@ -2,6 +2,7 @@
 
 import {ChangeEvent, TextareaHTMLAttributes, useEffect, useRef, useState} from "react";
 import DeleteIcon from "@/public/delete_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg"
+import {useLocalStorage} from "@/app/hooks/useLocalStorage";
 
 class Answer {
   id: string = "";
@@ -13,7 +14,8 @@ const defaultAnswers: Answer[][] = [[], [], [], []]
 
 export default function Home() {
 
-  const [answers, setAnswers] = useState<Answer[][]>(defaultAnswers)
+  const [question, setQuestion] = useLocalStorage<string>("question", "")
+  const [answers, setAnswers] = useLocalStorage<Answer[][]>("answers", defaultAnswers)
 
   const score0 = answers[0].reduce((prev, current) => prev += current.weight, 0)
   const score1 = answers[1].reduce((prev, current) => prev += current.weight, 0)
@@ -33,11 +35,14 @@ export default function Home() {
         <h1 className="text-xl opacity-50 text-center">Квадрат Декарта</h1>
         <h2 className="text-6xl text-center">Принимайте <span className="text-[#105097] font-bold">решения</span><br/>ответив
           на 4 вопроса</h2>
+        <a href="#description" className="opacity-50 underline mt-5">подробнее</a>
 
         <input
-          className="text-4xl mt-10 w-full text-center outline-none"
+          className="text-4xl mt-15 w-full text-center outline-none"
           type="text"
           placeholder={"Введите Ваш вопрос..."}
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
         />
 
         <div className="grid lg:grid-cols-2 gap-4 mt-7 w-full">
@@ -121,12 +126,32 @@ export default function Home() {
                     transition-all duration-200 hover:scale-102"
                     onClick={() => {
                       setAnswers(defaultAnswers);
+                      setQuestion("");
                     }}
                 >
                     Очистить
                 </button>
             </>
         }
+
+        <div
+          id="description"
+          className="p-10 bg-white mt-20 rounded-4xl"
+        >
+          <strong>Метод квадратов Декарта</strong> — инструмент для взвешенного принятия решений.
+
+          Выберите конкретное действие или решение и ответьте на четыре вопроса:
+
+          <ul>
+            <li>Что произойдёт, если я это сделаю?</li>
+            <li>Что произойдёт, если я этого не сделаю?</li>
+            <li>Чего не произойдёт, если я это сделаю?</li>
+            <li>Чего не произойдёт, если я этого не сделаю?</li>
+          </ul>
+
+          <br />
+          Такой подход помогает увидеть не только прямые последствия, но и упущенные возможности и предотвращённые риски. Метод особенно полезен в ситуациях неопределённости, когда решение откладывается или принимается на эмоциях.
+        </div>
       </main>
     </div>
   );
@@ -155,7 +180,7 @@ function Square({title, subtitle, subtitleBackground, subtitleColor, answers, on
   // }, [answers, editingAnswer]);
 
   return (
-    <div className="rounded-4xl p-7 flex flex-col justify-between bg-[#ffffff30] border-1 border-[#ffffff60]">
+    <div className="rounded-4xl p-7 flex flex-col justify-between bg-[#ffffff40] border-1 border-[#ffffff90]">
       <div className="flex flex-col items-start">
         <div
           className={`rounded-full pb-1 pt-1 pl-3 pr-3 text-sm ${subtitleBackground} ${subtitleColor}`}>{subtitle}</div>
@@ -165,7 +190,7 @@ function Square({title, subtitle, subtitleBackground, subtitleColor, answers, on
           {answers.map((answer, index) => (
             <div
               key={index}
-              className={`flex items-center gap-2 hover:bg-[#ffffff30] cursor-pointer transition-all duration-200 p-2 w-full rounded-xl ${editingAnswer && (editingAnswer?.id === answer.id) ? 'bg-[#ffffff30]' : ''}`}
+              className={`flex items-center gap-2 hover:bg-[#ffffff40] cursor-pointer transition-all duration-200 p-2 w-full rounded-xl ${editingAnswer && (editingAnswer?.id === answer.id) ? 'bg-[#ffffff40]' : ''}`}
               onClick={() => { setEditingAnswer(answer) }}
             >
               <div className="rounded-full bg-[#bdd5ee] text-[#105097] font-bold w-6 h-6 flex items-center justify-center text-sm">
