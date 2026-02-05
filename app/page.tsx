@@ -9,9 +9,11 @@ class Answer {
   weight: number = 5;
 }
 
+const defaultAnswers: Answer[][] = [[], [], [], []]
+
 export default function Home() {
 
-  const [answers, setAnswers] = useState<Answer[][]>([[], [], [], []])
+  const [answers, setAnswers] = useState<Answer[][]>(defaultAnswers)
 
   const score0 = answers[0].reduce((prev, current) => prev += current.weight, 0)
   const score1 = answers[1].reduce((prev, current) => prev += current.weight, 0)
@@ -90,7 +92,8 @@ export default function Home() {
                 <button
                     className="sticky bottom-5 mt-5
                     h-17 pl-8 pr-8 flex justify-center items-center rounded-full
-                    bg-[#105097] text-white font-bold cursor-pointer"
+                    bg-[#105097] text-white font-bold cursor-pointer
+                    transition-all duration-200 hover:scale-102"
                     onClick={() => {
                       document.getElementById("result")?.scrollIntoView({ behavior: "smooth" });
                     }}
@@ -110,6 +113,18 @@ export default function Home() {
                         </div>
                     </div>
                 </div>
+
+                <button
+                    className="mt-5
+                    h-17 pl-8 pr-8 flex justify-center items-center rounded-full
+                    border-1 border-[#105097] font-bold cursor-pointer
+                    transition-all duration-200 hover:scale-102"
+                    onClick={() => {
+                      setAnswers(defaultAnswers);
+                    }}
+                >
+                    Очистить
+                </button>
             </>
         }
       </main>
@@ -128,7 +143,16 @@ interface SquareProps {
 
 function Square({title, subtitle, subtitleBackground, subtitleColor, answers, onAnswersUpdate}: SquareProps) {
 
-  const [editingAnswer, setEditingAnswer] = useState<Answer | null>(null)
+  const [_editingAnswer, setEditingAnswer] = useState<Answer | null>(null)
+  const editingAnswer = answers.find(a => a.id === _editingAnswer?.id) ?? null
+
+  // useEffect(() => {
+  //   if (editingAnswer) {
+  //     if (!answers.some((it) => it.id === editingAnswer.id)) {
+  //       setEditingAnswer(null)
+  //     }
+  //   }
+  // }, [answers, editingAnswer]);
 
   return (
     <div className="rounded-4xl p-7 flex flex-col justify-between bg-[#ffffff30] border-1 border-[#ffffff60]">
